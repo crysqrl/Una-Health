@@ -66,9 +66,9 @@ class ImportGlucoseData(CreateAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        myfile = serializer.validated_data['file']
-        user_id = myfile.name.split('.')[0]
-        content = StringIO(myfile.read().decode('utf-8'))
+        validated_file = serializer.validated_data['file']
+        user_id = validated_file.name.split('.')[0]
+        content = StringIO(validated_file.read().decode('utf-8'))
         process_glucose_data(user_id, content)
 
         return Response({"status": "success"},
